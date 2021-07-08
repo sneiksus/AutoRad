@@ -1,26 +1,58 @@
 import React, { Component } from 'react';
+import { Redirect } from "react-router-dom";
+import { Button, Form, FormGroup, Label, Input} from 'reactstrap';
 
 export class Home extends Component {
   static displayName = Home.name;
 
+  constructor(props){
+    super(props)
+    this.state = {isLogged:false, isResult: false};
+   
+  }
+
+  componentDidMount(){
+    console.log('construct')
+    const token = sessionStorage.getItem('tokenKey');
+     fetch("/Main/GetLogin", {
+                method: "GET",
+                headers: {
+                    "Accept": "application/json",
+                    "Authorization": "Bearer " + token  
+                }
+            }).then(res => {
+              if(res.ok === true) {
+                 this.setState({isLogged:true});
+               
+            }
+            this.setState({isResult:true});
+          });
+  }
+
   render () {
+    if(this.state.isResult){
+    if (this.state.isLogged) {
+    
     return (
-      <div>
-        <h1>Hello, world!</h1>
-        <p>Welcome to your new single-page application, built with:</p>
-        <ul>
-          <li><a href='https://get.asp.net/'>ASP.NET Core</a> and <a href='https://msdn.microsoft.com/en-us/library/67ef8sbd.aspx'>C#</a> for cross-platform server-side code</li>
-          <li><a href='https://facebook.github.io/react/'>React</a> for client-side code</li>
-          <li><a href='http://getbootstrap.com/'>Bootstrap</a> for layout and styling</li>
-        </ul>
-        <p>To help you get started, we have also set up:</p>
-        <ul>
-          <li><strong>Client-side navigation</strong>. For example, click <em>Counter</em> then <em>Back</em> to return here.</li>
-          <li><strong>Development server integration</strong>. In development mode, the development server from <code>create-react-app</code> runs in the background automatically, so your client-side resources are dynamically built on demand and the page refreshes when you modify any file.</li>
-          <li><strong>Efficient production builds</strong>. In production mode, development-time features are disabled, and your <code>dotnet publish</code> configuration produces minified, efficiently bundled JavaScript files.</li>
-        </ul>
-        <p>The <code>ClientApp</code> subdirectory is a standard React application based on the <code>create-react-app</code> template. If you open a command prompt in that directory, you can run <code>npm</code> commands such as <code>npm test</code> or <code>npm install</code>.</p>
+      <div className="row justify-content-center">
+      <div className="col-lg-4">
+      <Form onSubmit={this.handleSubmit}  method='POST' className="vc  p-4  border border-secondary">
+     <FormGroup  className="text-center">
+       <Label for="key">Пошук авто</Label>
+       <Input className="mt-3" name="mark" type="select" id="mark" onChange={this.keyChange} placeholder="Марка" > <option>Марка</option></Input>
+       <Input className="mt-3" name="model" type="select" id="model" onChange={this.keyChange} placeholder="Модель" ><option>Модель</option></Input>
+     </FormGroup>
+     <Button type="submit" className="bg-warning mt-2">Шукати</Button>
+     </Form>
+      </div>
       </div>
     );
+    }
+    else
+    return <Redirect to='/counter' />
   }
+  else{
+   return(<h1>Loading..</h1>);
+  }
+}
 }
