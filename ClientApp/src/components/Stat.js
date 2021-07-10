@@ -17,7 +17,8 @@ export class Stat extends Component {
        type: 'GET',    
        url:"/Main/GetPrices",
        data:{'idMark': this.props.mark,
-       'idModel': this.props.model},
+       'idModel': this.props.model,
+       'idYear': this.props.year},
        success: function(data){
          const res = JSON.parse(data);
          console.log(res)
@@ -40,7 +41,7 @@ export class Stat extends Component {
       <div className="container">
           <div className="row justify-content-center">
               <div className="col-lg-6 mt-4">
-                   <h1>Знайдено <i className="text-warning "> {this.state.cars-1} </i> оголошень</h1>
+                   <h1>Знайдено <i className="text-warning "> {this.state.cars} </i> оголошень</h1>
               </div>
           </div>
           <div className="row justify-content-center">

@@ -9,14 +9,22 @@ export class Home extends Component {
 
   constructor(props){
     super(props)
-    this.state = {isLogged:false, isResult: false, marks: [], models: [], selectedMark: 1, selectedModel: null, search: false};
+    this.state = {isLogged:false, isResult: false, marks: [], models: [], selectedMark: 1, selectedModel: null, search: false, years: [], selectedYear:2020};
     this.getModels = this.getModels.bind(this);
     this.modelChanged = this.modelChanged.bind(this);
     this.find =this.find.bind(this);
+    this.yearChanged =this.yearChanged.bind(this);
+    for(var i=2000;i<=2020;i++)
+       this.state.years.push(<option value={i}>{i}</option>)
   }
 
   find(){
    this.setState({search: true})
+  }
+
+  yearChanged(e){
+    console.log(e.target.value)
+    this.setState({selectedYear:e.target.value})
   }
 
   modelChanged(e){
@@ -80,7 +88,7 @@ export class Home extends Component {
 
   render () {
     if(this.state.search)
-        return(<Stat mark={this.state.selectedMark} model={this.state.selectedModel} />)
+        return(<Stat mark={this.state.selectedMark} model={this.state.selectedModel} year={this.state.selectedYear}/>)
     if(this.state.isResult){
     if (this.state.isLogged) {
     
@@ -92,6 +100,7 @@ export class Home extends Component {
        <Label for="key">Пошук авто</Label>
        <Input className="mt-4" name="mark" value={this.state.selectedMark} type="select" id="mark" onChange={this.getModels} placeholder="Марка" >{this.state.marks.map(x => <option value={x.value}>{x.name}</option>)}</Input>
        <Input className="mt-4" name="model" type="select" id="model" value={this.state.selectedModel}  onChange={this.modelChanged} placeholder="Модель" >{this.state.models.map(x => <option value={x.value}>{x.name}</option>)}</Input>
+       <Input className="mt-4" name="model" type="select" id="model" value={this.state.selectedYear}  onChange={this.yearChanged} placeholder="Рік" >{this.state.years}</Input>
      </div>
      <Button type="submit" onClick={this.find} className="bg-warning mt-3">Шукати</Button>
      </div>

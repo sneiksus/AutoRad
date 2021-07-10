@@ -52,9 +52,9 @@ namespace AutoRad.Controllers
                 return Content(reader.ReadToEnd());
             }
         }
-        public IActionResult GetPrices(string idMark,string idModel)
+        public IActionResult GetPrices(string idMark,string idModel, string idYear)
         {
-            HttpWebRequest request = (HttpWebRequest)WebRequest.Create("https://developers.ria.com/auto/average_price?api_key=Z2rc4dPy83eWGIsXmym6Yiuf50ELJNXkshGrH811&marka_id="+idMark+"&model_id="+idModel+"&custom=0");
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create("https://developers.ria.com/auto/average_price?api_key=Z2rc4dPy83eWGIsXmym6Yiuf50ELJNXkshGrH811&marka_id="+idMark+"&model_id="+idModel+"&custom=0&yers="+idYear);
             request.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
 
             using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
