@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Redirect } from "react-router-dom";
 import { Button, Form, FormGroup, Label, Input} from 'reactstrap';
+import { Stat } from './Stat';
 import $ from 'jquery'; 
 
 export class Home extends Component {
@@ -8,15 +9,14 @@ export class Home extends Component {
 
   constructor(props){
     super(props)
-    this.state = {isLogged:false, isResult: false, marks: [], models: [], selectedMark: 1, selectedModel: null};
+    this.state = {isLogged:false, isResult: false, marks: [], models: [], selectedMark: 1, selectedModel: null, search: false};
     this.getModels = this.getModels.bind(this);
     this.modelChanged = this.modelChanged.bind(this);
     this.find =this.find.bind(this);
   }
 
   find(){
-    console.log(this.state.selectedMark)
-    console.log(this.state.selectedModel)
+   this.setState({search: true})
   }
 
   modelChanged(e){
@@ -79,6 +79,8 @@ export class Home extends Component {
   }
 
   render () {
+    if(this.state.search)
+        return(<Stat mark={this.state.selectedMark} model={this.state.selectedModel} />)
     if(this.state.isResult){
     if (this.state.isLogged) {
     

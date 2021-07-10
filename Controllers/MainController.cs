@@ -52,6 +52,18 @@ namespace AutoRad.Controllers
                 return Content(reader.ReadToEnd());
             }
         }
+        public IActionResult GetPrices(string idMark,string idModel)
+        {
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create("https://developers.ria.com/auto/average_price?api_key=Z2rc4dPy83eWGIsXmym6Yiuf50ELJNXkshGrH811&marka_id="+idMark+"&model_id="+idModel+"&custom=0");
+            request.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
+
+            using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
+            using (Stream stream = response.GetResponseStream())
+            using (StreamReader reader = new StreamReader(stream))
+            {
+                return Content(reader.ReadToEnd());
+            }
+        }
         private ClaimsIdentity GetIdentity(string k)
         {
             User person = db.Users.FirstOrDefault(x => x.key == k);
