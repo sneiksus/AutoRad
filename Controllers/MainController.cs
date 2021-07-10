@@ -6,7 +6,9 @@ using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
+using System.IO;
 using System.Linq;
+using System.Net;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -24,6 +26,31 @@ namespace AutoRad.Controllers
         public IActionResult GetLogin()
         {
             return Ok();
+        }
+
+        public IActionResult GetMarks()
+        {
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create("https://developers.ria.com/auto/categories/1/marks?api_key=Z2rc4dPy83eWGIsXmym6Yiuf50ELJNXkshGrH811");
+            request.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
+
+            using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
+            using (Stream stream = response.GetResponseStream())
+            using (StreamReader reader = new StreamReader(stream))
+            {
+                return Content(reader.ReadToEnd());
+            }
+        }
+        public IActionResult GetModels(string idModel)
+        {
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create("https://developers.ria.com/auto/categories/1/marks/"+idModel+"/models?api_key=Z2rc4dPy83eWGIsXmym6Yiuf50ELJNXkshGrH811");
+            request.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
+
+            using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
+            using (Stream stream = response.GetResponseStream())
+            using (StreamReader reader = new StreamReader(stream))
+            {
+                return Content(reader.ReadToEnd());
+            }
         }
         private ClaimsIdentity GetIdentity(string k)
         {
